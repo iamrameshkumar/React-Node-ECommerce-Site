@@ -1,0 +1,18 @@
+{
+	"compilerOptions": {
+		"target": "es6"
+	},
+	"exclude": [
+		"node_modules",
+		"scripts",
+		"env",
+		"dist",
+		"lib",
+		"locales",
+		"logs",
+		"tcl",
+		"public",
+		"theme/dist/**/*"
+	],
+	"include": ["src/admin/**/*", "src/api/**/*", "src/store/**/*", "config/**/*"]
+}
