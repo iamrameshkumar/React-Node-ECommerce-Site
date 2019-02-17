@@ -186,6 +186,7 @@ class CustomersService {
 
 		customer.note = parse.getString(data.note);
 		customer.email = parse.getString(data.email).toLowerCase();
+		customer.password = parse.getBrowser(data.password);
 		customer.mobile = parse.getString(data.mobile).toLowerCase();
 		customer.full_name = parse.getString(data.full_name);
 		customer.gender = parse.getString(data.gender).toLowerCase();

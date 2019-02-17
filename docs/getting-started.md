@@ -1,13 +1,16 @@
 # Getting Started
 
-* [Installation](#1-installation)
-* [Run Application](#2-run-application)
-* [Configuration](#3-configuration)
-* [Preparing Database](#4-preparing-database)
+- [Getting Started](#getting-started)
+	- [1. Installation](#1-installation)
+		- [Requirements](#requirements)
+	- [2. Run Application](#2-run-application)
+	- [3. Configuration](#3-configuration)
+	- [4. Preparing Database](#4-preparing-database)
 
 ## 1. Installation
 
 ### Requirements
+
 - Node.js >= 8
 - MongoDB >= 3.2
 
@@ -25,18 +28,22 @@ npm start
 ```
 
 Also, you can run application with PM2 and watch for modifications.
+
 1. Install PM2 globally
+
 ```
 npm install pm2 -g
 ```
+
 2. Run application
+
 ```shell
 pm2 start process.json
 ```
 
-Open http://localhost:3000 to see your store.  
-Dashboard - http://localhost:3000/admin  
-API - http://localhost:3001
+Open http://localhost:8000 to see your store.  
+Dashboard - http://localhost:8000/admin  
+API - http://localhost:8001
 
 ## 3. Configuration
 
@@ -58,6 +65,7 @@ npm start
 ## 4. Preparing Database
 
 This script will:
+
 - test MongoDB connection
 - add default data
 - create basic indexes

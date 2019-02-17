@@ -1,6 +1,7 @@
 import security from '../lib/security';
 import CustomersService from '../services/customers/customers';
 
+// Routes
 class CustomersRoute {
 	constructor(router) {
 		this.router = router;

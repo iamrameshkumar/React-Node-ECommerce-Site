@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 import * as t from './actionTypes';
+import authReducer from './reducers/authReducer';
+import errorReducer from './reducers/errorReducer';
 
 const initialState = {};
 
@@ -100,4 +102,4 @@ const appReducer = (state = initialState, action) => {
 	}
 };
 
-export default combineReducers({ app: appReducer, form: formReducer });
+export default combineReducers({ app: appReducer, form: formReducer, auth:authReducer, errors:errorReducer });

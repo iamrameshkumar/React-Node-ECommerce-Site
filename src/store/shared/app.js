@@ -13,6 +13,8 @@ import CheckoutContainer from './containers/checkout';
 import CheckoutSuccessContainer from './containers/checkoutSuccess';
 import NotFoundContainer from './containers/notfound';
 import SearchContainer from './containers/search';
+import LoginContainer from './containers/UserLogin/loginForm';
+import SignupContainer from './containers/Signup/SignupForm';
 
 import { setCurrentPage } from './actions';
 import { PAGE, PRODUCT_CATEGORY, PRODUCT, RESERVED, SEARCH } from './pageTypes';
@@ -55,7 +57,11 @@ class SwitchContainers extends React.Component {
 			case SEARCH:
 				return <SearchContainer />;
 			case PAGE:
-				if (locationPathname === '/') {
+				if (locationPathname === '/login' || locationPathname === '/signin') {
+					return <LoginContainer />;
+				} else if (locationPathname === '/signup') {
+					return <SignupContainer />;
+				} else if (locationPathname === '/') {
 					return <IndexContainer />;
 				} else if (locationPathname === '/checkout') {
 					return <CheckoutContainer />;

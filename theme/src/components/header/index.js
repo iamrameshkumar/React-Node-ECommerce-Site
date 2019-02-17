@@ -7,7 +7,7 @@ import SearchBox from './searchBox';
 import HeadMenu from './headMenu';
 
 const Logo = ({ src, onClick, alt }) => (
-	<NavLink className="logo-image" to="/" onClick={onClick}>
+	<NavLink className="logo-image align-left-on-tablet" to="/" onClick={onClick}>
 		<img src={src} alt={alt} />
 	</NavLink>
 );
@@ -131,64 +131,59 @@ export default class Header extends React.Component {
 				<header
 					className={this.state.mobileSearchIsActive ? 'search-active' : ''}
 				>
-					<div className="container">
-						<div className="columns is-gapless is-mobile header-container">
-							<div className="column is-4">
-								{!showBackButton && (
-									<BurgerButton
-										onClick={this.menuToggle}
-										className={classToggle}
-									/>
-								)}
-								{showBackButton && <BackButton onClick={this.handleGoBack} />}
-							</div>
-							<div className="column is-4 has-text-centered">
-								<Logo src={settings.logo} onClick={this.closeAll} alt="logo" />
-							</div>
-							<div className="column is-4 has-text-right header-block-right">
-								<span
-									className="icon icon-search is-hidden-tablet"
-									onClick={this.searchToggle}
-								>
-									<img
-										src="/assets/images/search.svg"
-										alt={text.search}
-										title={text.search}
-										style={{ minWidth: 24 }}
-									/>
-								</span>
-								<SearchBox
-									value={productFilter.search}
-									onSearch={this.handleSearch}
-									className={
-										this.state.mobileSearchIsActive ? 'search-active' : ''
-									}
+					<div className="columns is-gapless is-mobile header-container">
+						<div className="column is-4 remove-element-on-tablet">
+							{!showBackButton && (
+								<BurgerButton
+									onClick={this.menuToggle}
+									className={classToggle}
 								/>
-
-								<CartIndicator
-									cart={cart}
-									onClick={this.cartToggle}
-									cartIsActive={this.state.cartIsActive}
-								/>
-								<div
-									className={this.state.cartIsActive ? 'mini-cart-open' : ''}
-								>
-									<Cart
-										cart={cart}
-										deleteCartItem={this.props.deleteCartItem}
-										settings={settings}
-										cartToggle={this.cartToggle}
-									/>
-								</div>
-							</div>
+							)}
+							{showBackButton && <BackButton onClick={this.handleGoBack} />}
 						</div>
-
-						<div className="primary-nav is-hidden-mobile">
+						<div className="column is-variable is-4-mobile is-2-desktop">
+							<Logo src={settings.logo} onClick={this.closeAll} alt="logo" />
+						</div>
+						<div className="column primary-nav is-variable is-hidden-mobile is-7-desktop">
 							<HeadMenu
 								categories={categories}
 								location={location}
 								isMobile={false}
 							/>
+						</div>
+						<div className="column is-3 has-text-right header-block-right">
+							<span
+								className="icon icon-search is-hidden-tablet"
+								onClick={this.searchToggle}
+							>
+								<img
+									src="/assets/images/search.svg"
+									alt={text.search}
+									title={text.search}
+									style={{ minWidth: 24 }}
+								/>
+							</span>
+							<SearchBox
+								value={productFilter.search}
+								onSearch={this.handleSearch}
+								className={
+									this.state.mobileSearchIsActive ? 'search-active' : ''
+								}
+							/>
+
+							<CartIndicator
+								cart={cart}
+								onClick={this.cartToggle}
+								cartIsActive={this.state.cartIsActive}
+							/>
+							<div className={this.state.cartIsActive ? 'mini-cart-open' : ''}>
+								<Cart
+									cart={cart}
+									deleteCartItem={this.props.deleteCartItem}
+									settings={settings}
+									cartToggle={this.cartToggle}
+								/>
+							</div>
 						</div>
 					</div>
 				</header>

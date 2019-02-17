@@ -10,9 +10,7 @@ const SharedContainer = props => {
 		state: { currentPage, settings }
 	} = props;
 	const hideFooter =
-		(currentPage.path === '/checkout-success' ||
-			currentPage.path === '/checkout') &&
-		themeSettings.hide_footer_on_checkout === true;
+		currentPage.path !== '/' && themeSettings.hide_footer_on_checkout === true;
 
 	return (
 		<Fragment>

@@ -9,7 +9,9 @@ const SITEMAP_EXCLUDE_PATH = [
 	'/account',
 	'/cart',
 	'/login',
+	'/signin',
 	'/logout',
+	'/signup',
 	'/register'
 ];
 

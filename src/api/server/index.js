@@ -11,6 +11,8 @@ import { db } from './lib/mongo';
 import dashboardWebSocket from './lib/dashboardWebSocket';
 import ajaxRouter from './ajaxRouter';
 import apiRouter from './apiRouter';
+
+const passport = require('passport');
 const app = express();
 
 security.applyMiddleware(app);
@@ -37,6 +39,9 @@ app.use(bodyParser.json());
 app.use('/ajax', ajaxRouter);
 app.use('/api', apiRouter);
 app.use(logger.sendResponse);
+app.use(passport.initialize());
+// Passport config
+require('./config/passport')(passport);
 
 const server = app.listen(settings.apiListenPort, () => {
 	const serverAddress = server.address();

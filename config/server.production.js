@@ -12,10 +12,10 @@ const dbUrl =
 
 module.exports = {
 	// used by Store (server side)
-	apiBaseUrl: `http://localhost:3001/api/v1`,
+	apiBaseUrl: `http://localhost:8001/api/v1`,
 
 	// used by Store (server and client side)
-	ajaxBaseUrl: `http://localhost:3001/ajax`,
+	ajaxBaseUrl: `http://localhost:8001/ajax`,
 
 	// Access-Control-Allow-Origin
 	storeBaseUrl: '*',
@@ -23,8 +23,8 @@ module.exports = {
 	// used by API
 	adminLoginUrl: '/admin/login',
 
-	apiListenPort: 3001,
-	storeListenPort: 3000,
+	apiListenPort: 8001,
+	storeListenPort: 8000,
 
 	// used by API
 	mongodbServerUrl: dbUrl,

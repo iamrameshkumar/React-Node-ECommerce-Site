@@ -50,6 +50,24 @@ const addAllPages = async db => {
 		enabled: true,
 		is_system: false
 	});
+	await addPage(db, {
+		slug: 'login',
+		meta_title: 'Login',
+		enabled: true,
+		is_system: false
+	});
+	await addPage(db, {
+		slug: 'signin',
+		meta_title: 'Login',
+		enabled: true,
+		is_system: false
+	});
+	await addPage(db, {
+		slug: 'signup',
+		meta_title: 'Signup',
+		enabled: true,
+		is_system: false
+	});
 };
 
 const addAllProducts = async db => {
