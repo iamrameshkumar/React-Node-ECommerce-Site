@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { TextField, RaisedButton, Dialog, Checkbox } from 'material-ui';
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
 import styles from './style';
 
-import { registerUser } from "../../actions/authActions";
-import classnames from "classnames";
+import { registerUser } from '../../actions/authActions';
+import classnames from 'classnames';
 
 class SignUp extends Component {
 	constructor() {
@@ -255,17 +256,17 @@ class SignUp extends Component {
 }
 
 SignUp.propTypes = {
-  registerUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
+	registerUser: PropTypes.func.isRequired,
+	auth: PropTypes.object.isRequired,
+	errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth,
-  errors: state.errors
+	auth: state.auth,
+	errors: state.errors
 });
 
 export default connect(
-  mapStateToProps,
-  { registerUser }
+	mapStateToProps,
+	{ registerUser }
 )(withRouter(SignUp));
