@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/store/server/settings.js"],"names":[],"mappings":";;;;AAAA","file":"settings.js","sourcesContent":["import settings from '../../../config/server';\nexport default settings;\n"]}
