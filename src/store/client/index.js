@@ -9,7 +9,7 @@ import clientSettings from './settings';
 import reducers from '../shared/reducers';
 import * as analytics from '../shared/analytics';
 import App from '../shared/app';
-import api from './api';
+import { api, restapi } from './api';
 
 const initialState = window.__APP_STATE__;
 const themeText = window.__APP_TEXT__;
@@ -18,7 +18,8 @@ initOnClient({
 	themeSettings: initialState.app.themeSettings,
 	text: themeText,
 	language: clientSettings.language,
-	api: api
+	api: api,
+	restapi: restapi
 });
 
 const store = createStore(

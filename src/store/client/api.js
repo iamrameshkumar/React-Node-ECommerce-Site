@@ -1,8 +1,10 @@
 import CezerinClient from 'cezerin-client';
 import clientSettings from './settings';
 
-const api = new CezerinClient({
+export const api = new CezerinClient({
 	ajaxBaseUrl: clientSettings.ajaxBaseUrl || '/ajax'
 });
 
-export default api;
+export const restapi = new CezerinClient({
+	apiBaseUrl: clientSettings.apiBaseUrl || '/api/v1'
+});

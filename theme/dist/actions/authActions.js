@@ -3,9 +3,9 @@
 exports.__esModule = true;
 exports.logoutUser = exports.setUserLoading = exports.setCurrentUser = exports.loginUser = exports.registerUser = undefined;
 
-var _axios = require('axios');
+var _api = require('../lib/api');
 
-var _axios2 = _interopRequireDefault(_axios);
+var _api2 = _interopRequireDefault(_api);
 
 var _setAuthToken = require('../lib/utils/setAuthToken');
 
@@ -22,7 +22,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // Register User
 var registerUser = exports.registerUser = function registerUser(userData, history) {
 	return function (dispatch) {
-		_axios2.default.post('/api/v1/users/register', userData).then(function (res) {
+		_api2.default.restClient.post('/users/register', userData).then(function (res) {
 			return history.push('/login');
 		}).catch(function (err) {
 			return dispatch({
@@ -36,7 +36,7 @@ var registerUser = exports.registerUser = function registerUser(userData, histor
 // Login - get user token
 var loginUser = exports.loginUser = function loginUser(userData) {
 	return function (dispatch) {
-		_axios2.default.post('/api/v1/users/login', userData).then(function (res) {
+		_api2.default.restClient.post('/users/login', userData).then(function (res) {
 			// Save to localStorage
 
 			// Set token to localStorage

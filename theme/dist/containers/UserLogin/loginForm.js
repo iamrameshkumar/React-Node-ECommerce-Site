@@ -44,11 +44,11 @@ var _style2 = _interopRequireDefault(_style);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Login = function (_Component) {
-	(0, _inherits3.default)(Login, _Component);
+var LoginForm = function (_Component) {
+	(0, _inherits3.default)(LoginForm, _Component);
 
-	function Login() {
-		(0, _classCallCheck3.default)(this, Login);
+	function LoginForm() {
+		(0, _classCallCheck3.default)(this, LoginForm);
 
 		var _this = (0, _possibleConstructorReturn3.default)(this, _Component.call(this));
 
@@ -80,33 +80,26 @@ var Login = function (_Component) {
 		_this.state = {
 			email: '',
 			password: '',
-			errors: {},
-			open: false,
+			open: true,
 			checked: false
 		};
 		return _this;
 	}
 
-	Login.prototype.componentDidMount = function componentDidMount() {
+	LoginForm.prototype.componentDidMount = function componentDidMount() {
 		// If logged in and user navigates to Login page, should redirect them to dashboard
 		if (this.props.auth.isAuthenticated) {
 			this.props.history.push('/');
 		}
 	};
 
-	Login.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+	LoginForm.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
 		if (nextProps.auth.isAuthenticated) {
 			this.props.history.push('/');
 		}
-
-		if (nextProps.errors) {
-			this.setState({
-				errors: nextProps.errors
-			});
-		}
 	};
 
-	Login.prototype.updateCheck = function updateCheck() {
+	LoginForm.prototype.updateCheck = function updateCheck() {
 		this.setState(function (oldState) {
 			return {
 				checked: !oldState.checked
@@ -114,8 +107,8 @@ var Login = function (_Component) {
 		});
 	};
 
-	Login.prototype.render = function render() {
-		var errors = this.state.errors;
+	LoginForm.prototype.render = function render() {
+		var errors = this.props.errors.errors;
 
 
 		var actions = [_react2.default.createElement(
@@ -129,7 +122,7 @@ var Login = function (_Component) {
 			style: _style2.default.buttonStyle
 		}), _react2.default.createElement(_materialUi.RaisedButton, {
 			label: 'Submit',
-			onClick: this.handleClose,
+			onClick: this.onSubmit,
 			secondary: true,
 			style: _style2.default.buttonStyle
 		})];
@@ -137,12 +130,6 @@ var Login = function (_Component) {
 		return _react2.default.createElement(
 			_MuiThemeProvider2.default,
 			null,
-			_react2.default.createElement(_materialUi.RaisedButton, {
-				label: 'Login',
-				onClick: this.handleOpen,
-				secondary: true,
-				style: _style2.default.buttonStyle
-			}),
 			_react2.default.createElement(
 				_materialUi.Dialog,
 				{
@@ -181,7 +168,7 @@ var Login = function (_Component) {
 					'I don\'t have an account',
 					_react2.default.createElement(
 						'a',
-						{ href: '/register', style: _style2.default.loginLink },
+						{ href: '/signup', style: _style2.default.loginLink },
 						'Sign Up Now'
 					)
 				)
@@ -189,10 +176,10 @@ var Login = function (_Component) {
 		);
 	};
 
-	return Login;
+	return LoginForm;
 }(_react.Component);
 
-Login.propTypes = {
+LoginForm.propTypes = {
 	loginUser: _propTypes2.default.func.isRequired,
 	auth: _propTypes2.default.object.isRequired,
 	errors: _propTypes2.default.object.isRequired
@@ -205,5 +192,5 @@ var mapStateToProps = function mapStateToProps(state) {
 	};
 };
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, { loginUser: _authActions.loginUser })(Login);
+exports.default = (0, _reactRedux.connect)(mapStateToProps, { loginUser: _authActions.loginUser })(LoginForm);
 //# sourceMappingURL=loginForm.js.map

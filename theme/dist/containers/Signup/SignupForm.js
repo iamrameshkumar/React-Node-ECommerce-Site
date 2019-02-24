@@ -46,11 +46,11 @@ var _classnames2 = _interopRequireDefault(_classnames);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var SignUp = function (_Component) {
-	(0, _inherits3.default)(SignUp, _Component);
+var SignUpForm = function (_Component) {
+	(0, _inherits3.default)(SignUpForm, _Component);
 
-	function SignUp() {
-		(0, _classCallCheck3.default)(this, SignUp);
+	function SignUpForm() {
+		(0, _classCallCheck3.default)(this, SignUpForm);
 
 		var _this = (0, _possibleConstructorReturn3.default)(this, _Component.call(this));
 
@@ -107,7 +107,6 @@ var SignUp = function (_Component) {
 			email: '',
 			password: '',
 			password2: '',
-			errors: {},
 			open: true,
 			checked: false,
 			finished: false,
@@ -116,22 +115,16 @@ var SignUp = function (_Component) {
 		return _this;
 	}
 
-	SignUp.prototype.componentDidMount = function componentDidMount() {
+	SignUpForm.prototype.componentDidMount = function componentDidMount() {
 		// If logged in and user navigates to Register page, should redirect them to dashboard
 		if (this.props.auth.isAuthenticated) {
 			this.props.history.push('/');
 		}
 	};
 
-	SignUp.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
-		if (nextProps.errors) {
-			this.setState({
-				errors: nextProps.errors
-			});
-		}
-	};
+	SignUpForm.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {};
 
-	SignUp.prototype.updateCheck = function updateCheck() {
+	SignUpForm.prototype.updateCheck = function updateCheck() {
 		this.setState(function (oldState) {
 			return {
 				checked: !oldState.checked
@@ -139,7 +132,7 @@ var SignUp = function (_Component) {
 		});
 	};
 
-	SignUp.prototype.getStepContent = function getStepContent(stepIndex) {
+	SignUpForm.prototype.getStepContent = function getStepContent(stepIndex) {
 		switch (stepIndex) {
 			case 0:
 				return _react2.default.createElement(
@@ -214,7 +207,7 @@ var SignUp = function (_Component) {
 		}
 	};
 
-	SignUp.prototype.render = function render() {
+	SignUpForm.prototype.render = function render() {
 		var _this2 = this;
 
 		var _state = this.state,
@@ -332,10 +325,10 @@ var SignUp = function (_Component) {
 		);
 	};
 
-	return SignUp;
+	return SignUpForm;
 }(_react.Component);
 
-SignUp.propTypes = {
+SignUpForm.propTypes = {
 	registerUser: _propTypes2.default.func.isRequired,
 	auth: _propTypes2.default.object.isRequired,
 	errors: _propTypes2.default.object.isRequired
@@ -348,5 +341,5 @@ var mapStateToProps = function mapStateToProps(state) {
 	};
 };
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, { registerUser: _authActions.registerUser })((0, _reactRouterDom.withRouter)(SignUp));
+exports.default = (0, _reactRedux.connect)(mapStateToProps, { registerUser: _authActions.registerUser })((0, _reactRouterDom.withRouter)(SignUpForm));
 //# sourceMappingURL=SignupForm.js.map

@@ -34,6 +34,8 @@ var registerUser = exports.registerUser = function registerUser(userData, histor
 };
 
 // Login - get user token
+
+//import api from '../../../lib/api';
 var loginUser = exports.loginUser = function loginUser(userData) {
 	return function (dispatch) {
 		_axios2.default.post('/api/v1/users/login', userData).then(function (res) {

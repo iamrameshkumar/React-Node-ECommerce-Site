@@ -18,6 +18,9 @@ initOnServer({
 	language: serverSettings.language,
 	api: new CezerinClient({
 		ajaxBaseUrl: serverSettings.ajaxBaseUrl
+	}),
+	restapi: new CezerinClient({
+		apiBaseUrl: serverSettings.apiBaseUrl
 	})
 });
 

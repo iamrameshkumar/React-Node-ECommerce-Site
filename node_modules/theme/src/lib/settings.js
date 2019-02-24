@@ -2,6 +2,7 @@ export let themeSettings = null;
 export let text = null;
 export let language = null;
 export let api = null;
+export let restapi = null;
 
 const setVariables = options => {
 	if (options.themeSettings) {
@@ -18,6 +19,10 @@ const setVariables = options => {
 
 	if (options.api) {
 		({ api } = options);
+	}
+
+	if (options.restapi) {
+		({ restapi } = options);
 	}
 };
 

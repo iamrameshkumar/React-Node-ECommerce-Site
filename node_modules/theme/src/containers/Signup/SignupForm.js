@@ -11,7 +11,7 @@ import styles from './style';
 import { registerUser } from '../../actions/authActions';
 import classnames from 'classnames';
 
-class SignUp extends Component {
+class SignUpForm extends Component {
 	constructor() {
 		super();
 		this.state = {
@@ -19,7 +19,6 @@ class SignUp extends Component {
 			email: '',
 			password: '',
 			password2: '',
-			errors: {},
 			open: true,
 			checked: false,
 			finished: false,
@@ -34,13 +33,7 @@ class SignUp extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.errors) {
-			this.setState({
-				errors: nextProps.errors
-			});
-		}
-	}
+	componentWillReceiveProps(nextProps) {}
 
 	onChange = e => {
 		this.setState({ [e.target.id]: e.target.value });
@@ -255,7 +248,7 @@ class SignUp extends Component {
 	}
 }
 
-SignUp.propTypes = {
+SignUpForm.propTypes = {
 	registerUser: PropTypes.func.isRequired,
 	auth: PropTypes.object.isRequired,
 	errors: PropTypes.object.isRequired
@@ -269,4 +262,4 @@ const mapStateToProps = state => ({
 export default connect(
 	mapStateToProps,
 	{ registerUser }
-)(withRouter(SignUp));
+)(withRouter(SignUpForm));

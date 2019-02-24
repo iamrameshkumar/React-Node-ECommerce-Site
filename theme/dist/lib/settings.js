@@ -5,6 +5,7 @@ var themeSettings = exports.themeSettings = null;
 var text = exports.text = null;
 var language = exports.language = null;
 var api = exports.api = null;
+var restapi = exports.restapi = null;
 
 var setVariables = function setVariables(options) {
 	if (options.themeSettings) {
@@ -21,6 +22,10 @@ var setVariables = function setVariables(options) {
 
 	if (options.api) {
 		exports.api = api = options.api;
+	}
+
+	if (options.restapi) {
+		exports.restapi = restapi = options.restapi;
 	}
 };
 

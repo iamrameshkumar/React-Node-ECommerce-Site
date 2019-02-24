@@ -11,14 +11,13 @@ import { loginUser } from '../../actions/authActions';
 
 import styles from './style';
 
-class Login extends Component {
+class LoginForm extends Component {
 	constructor() {
 		super();
 		this.state = {
 			email: '',
 			password: '',
-			errors: {},
-			open: false,
+			open: true,
 			checked: false
 		};
 	}
@@ -33,12 +32,6 @@ class Login extends Component {
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.auth.isAuthenticated) {
 			this.props.history.push('/');
-		}
-
-		if (nextProps.errors) {
-			this.setState({
-				errors: nextProps.errors
-			});
 		}
 	}
 
@@ -74,7 +67,7 @@ class Login extends Component {
 	};
 
 	render() {
-		const { errors } = this.state;
+		const { errors } = this.props.errors;
 
 		const actions = [
 			<a href="#">Forget My Password</a>,
@@ -86,7 +79,7 @@ class Login extends Component {
 			/>,
 			<RaisedButton
 				label="Submit"
-				onClick={this.handleClose}
+				onClick={this.onSubmit}
 				secondary={true}
 				style={styles.buttonStyle}
 			/>
@@ -94,12 +87,6 @@ class Login extends Component {
 
 		return (
 			<MuiThemeProvider>
-				<RaisedButton
-					label="Login"
-					onClick={this.handleOpen}
-					secondary={true}
-					style={styles.buttonStyle}
-				/>
 				<Dialog
 					title="Sign In To Webjustify "
 					actions={actions}
@@ -132,7 +119,7 @@ class Login extends Component {
 					/>
 					<signUp style={styles.signUpStyle}>
 						I don't have an account
-						<a href="/register" style={styles.loginLink}>
+						<a href="/signup" style={styles.loginLink}>
 							Sign Up Now
 						</a>
 					</signUp>
@@ -142,7 +129,7 @@ class Login extends Component {
 	}
 }
 
-Login.propTypes = {
+LoginForm.propTypes = {
 	loginUser: PropTypes.func.isRequired,
 	auth: PropTypes.object.isRequired,
 	errors: PropTypes.object.isRequired
@@ -156,4 +143,4 @@ const mapStateToProps = state => ({
 export default connect(
 	mapStateToProps,
 	{ loginUser }
-)(Login);
+)(LoginForm);

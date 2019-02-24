@@ -38,8 +38,6 @@ var _app2 = _interopRequireDefault(_app);
 
 var _api = require('./api');
 
-var _api2 = _interopRequireDefault(_api);
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -51,7 +49,8 @@ var themeText = window.__APP_TEXT__;
 	themeSettings: initialState.app.themeSettings,
 	text: themeText,
 	language: _settings2.default.language,
-	api: _api2.default
+	api: _api.api,
+	restapi: _api.restapi
 });
 
 var store = (0, _redux.createStore)(_reducers2.default, initialState, (0, _redux.applyMiddleware)(_reduxThunk2.default));

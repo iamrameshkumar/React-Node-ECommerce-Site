@@ -54,6 +54,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 	language: _settings2.default.language,
 	api: new _cezerinClient2.default({
 		ajaxBaseUrl: _settings2.default.ajaxBaseUrl
+	}),
+	restapi: new _cezerinClient2.default({
+		apiBaseUrl: _settings2.default.apiBaseUrl
 	})
 });
 
