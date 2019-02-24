@@ -1,4 +1,4 @@
-import restapi from '../lib/api';
+import api from '../lib/api';
 import setAuthToken from '../lib/utils/setAuthToken';
 import jwt_decode from 'jwt-decode';
 
@@ -6,7 +6,7 @@ import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING } from './authActiontypes';
 
 // Register User
 export const registerUser = (userData, history) => dispatch => {
-	restapi.restClient
+	api.restClient
 		.post('/users/register', userData)
 		.then(res => history.push('/login'))
 		.catch(err =>
@@ -19,7 +19,7 @@ export const registerUser = (userData, history) => dispatch => {
 
 // Login - get user token
 export const loginUser = userData => dispatch => {
-	restapi.restClient
+	api.restClient
 		.post('/users/login', userData)
 		.then(res => {
 			// Save to localStorage

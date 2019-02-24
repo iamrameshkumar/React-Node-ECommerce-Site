@@ -51,13 +51,7 @@ var _app2 = _interopRequireDefault(_app);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 (0, _theme.initOnServer)({
-	language: _settings2.default.language,
-	api: new _cezerinClient2.default({
-		ajaxBaseUrl: _settings2.default.ajaxBaseUrl
-	}),
-	restapi: new _cezerinClient2.default({
-		apiBaseUrl: _settings2.default.apiBaseUrl
-	})
+	language: _settings2.default.language
 });
 
 var getHead = function getHead() {

@@ -15,13 +15,7 @@ import { indexHtml } from './readIndexHtml';
 import App from '../shared/app';
 
 initOnServer({
-	language: serverSettings.language,
-	api: new CezerinClient({
-		ajaxBaseUrl: serverSettings.ajaxBaseUrl
-	}),
-	restapi: new CezerinClient({
-		apiBaseUrl: serverSettings.apiBaseUrl
-	})
+	language: serverSettings.language
 });
 
 const getHead = () => {

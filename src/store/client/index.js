@@ -9,7 +9,8 @@ import clientSettings from './settings';
 import reducers from '../shared/reducers';
 import * as analytics from '../shared/analytics';
 import App from '../shared/app';
-import { api, restapi } from './api';
+import api from './api';
+import restapi from './restapi';
 
 const initialState = window.__APP_STATE__;
 const themeText = window.__APP_TEXT__;
