@@ -54,12 +54,6 @@ var SignUpForm = function (_Component) {
 
 		var _this = (0, _possibleConstructorReturn3.default)(this, _Component.call(this));
 
-		_this.onChange = function (e) {
-			var _this$setState;
-
-			_this.setState((_this$setState = {}, _this$setState[e.target.id] = e.target.value, _this$setState));
-		};
-
 		_this.onSubmit = function (e) {
 			e.preventDefault();
 
@@ -73,12 +67,19 @@ var SignUpForm = function (_Component) {
 			_this.props.registerUser(newUser, _this.props.history);
 		};
 
+		_this.onChange = function (e) {
+			var _this$setState;
+
+			_this.setState((_this$setState = {}, _this$setState[e.target.id] = e.target.value, _this$setState));
+		};
+
 		_this.handleOpen = function () {
 			_this.setState({ open: true });
 		};
 
 		_this.handleClose = function () {
 			_this.setState({ open: false });
+			_this.props.history.push('/');
 		};
 
 		_this.handleNext = function () {
@@ -86,7 +87,7 @@ var SignUpForm = function (_Component) {
 
 			if (stepIndex === 2) {
 				_this.setState({ stepIndex: 0, finished: false });
-				window.location = 'http://www.webjustify.com';
+				window.location = '/';
 			}
 			_this.setState({
 				stepIndex: stepIndex + 1,
@@ -103,6 +104,8 @@ var SignUpForm = function (_Component) {
 		};
 
 		_this.state = {
+			firstname: '',
+			lastname: '',
 			name: '',
 			email: '',
 			password: '',
@@ -110,7 +113,8 @@ var SignUpForm = function (_Component) {
 			open: true,
 			checked: false,
 			finished: false,
-			stepIndex: 0
+			stepIndex: 0,
+			errors: {}
 		};
 		return _this;
 	}
@@ -122,7 +126,13 @@ var SignUpForm = function (_Component) {
 		}
 	};
 
-	SignUpForm.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {};
+	SignUpForm.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+		if (nextProps.errors) {
+			this.setState({
+				errors: nextProps.errors
+			});
+		}
+	};
 
 	SignUpForm.prototype.updateCheck = function updateCheck() {
 		this.setState(function (oldState) {
@@ -133,6 +143,8 @@ var SignUpForm = function (_Component) {
 	};
 
 	SignUpForm.prototype.getStepContent = function getStepContent(stepIndex) {
+		var _React$createElement;
+
 		switch (stepIndex) {
 			case 0:
 				return _react2.default.createElement(
@@ -143,7 +155,10 @@ var SignUpForm = function (_Component) {
 						floatingLabelStyle: _style2.default.floatingLabelStyle,
 						floatingLabelFocusStyle: _style2.default.floatingLabelFocusStyle,
 						underlineFocusStyle: _style2.default.underlineStyle,
-						fullWidth: true
+						fullWidth: true,
+						id: 'firstname',
+						value: this.state.firstname,
+						onChange: this.onChange
 					}),
 					_react2.default.createElement('br', null),
 					_react2.default.createElement(_materialUi.TextField, {
@@ -151,7 +166,10 @@ var SignUpForm = function (_Component) {
 						floatingLabelStyle: _style2.default.floatingLabelStyle,
 						floatingLabelFocusStyle: _style2.default.floatingLabelFocusStyle,
 						underlineFocusStyle: _style2.default.underlineStyle,
-						fullWidth: true
+						fullWidth: true,
+						id: 'lastname',
+						value: this.state.lastname,
+						onChange: this.onChange
 					}),
 					_react2.default.createElement('br', null),
 					_react2.default.createElement(_materialUi.TextField, {
@@ -166,20 +184,23 @@ var SignUpForm = function (_Component) {
 				return _react2.default.createElement(
 					'div',
 					null,
-					_react2.default.createElement(_materialUi.TextField, {
+					_react2.default.createElement(_materialUi.TextField, (_React$createElement = {
 						floatingLabelText: 'Username',
 						floatingLabelStyle: _style2.default.floatingLabelStyle,
 						floatingLabelFocusStyle: _style2.default.floatingLabelFocusStyle,
 						underlineFocusStyle: _style2.default.underlineStyle,
 						fullWidth: true
-					}),
+					}, _React$createElement['fullWidth'] = true, _React$createElement.id = 'name', _React$createElement.value = this.state.name, _React$createElement.onChange = this.onChange, _React$createElement)),
 					_react2.default.createElement('br', null),
 					_react2.default.createElement(_materialUi.TextField, {
 						floatingLabelText: 'Email',
 						floatingLabelStyle: _style2.default.floatingLabelStyle,
 						floatingLabelFocusStyle: _style2.default.floatingLabelFocusStyle,
 						underlineFocusStyle: _style2.default.underlineStyle,
-						fullWidth: true
+						fullWidth: true,
+						id: 'email',
+						value: this.state.email,
+						onChange: this.onChange
 					}),
 					_react2.default.createElement('br', null),
 					_react2.default.createElement(_materialUi.TextField, {
@@ -188,7 +209,10 @@ var SignUpForm = function (_Component) {
 						floatingLabelStyle: _style2.default.floatingLabelStyle,
 						floatingLabelFocusStyle: _style2.default.floatingLabelFocusStyle,
 						underlineFocusStyle: _style2.default.underlineStyle,
-						fullWidth: true
+						fullWidth: true,
+						id: 'password',
+						value: this.state.password,
+						onChange: this.onChange
 					}),
 					_react2.default.createElement('br', null)
 				);
@@ -215,6 +239,9 @@ var SignUpForm = function (_Component) {
 		    stepIndex = _state.stepIndex;
 
 		var contentStyle = { margin: '0 16px' };
+		var errors = this.state.errors;
+
+
 		var actions = [_react2.default.createElement(_materialUi.RaisedButton, {
 			label: 'Back',
 			disabled: stepIndex === 0,
@@ -286,7 +313,7 @@ var SignUpForm = function (_Component) {
 						_react2.default.createElement(
 							'a',
 							{
-								href: 'http://www.webjustify.com',
+								href: '/',
 								onClick: function onClick(event) {
 									event.preventDefault();
 									_this2.setState({ stepIndex: 0, finished: false });
@@ -317,7 +344,7 @@ var SignUpForm = function (_Component) {
 					'I have an account',
 					_react2.default.createElement(
 						'a',
-						{ href: 'http://www.webjustify.com', style: _style2.default.loginLink },
+						{ href: '/login', style: _style2.default.loginLink },
 						'Login'
 					)
 				)

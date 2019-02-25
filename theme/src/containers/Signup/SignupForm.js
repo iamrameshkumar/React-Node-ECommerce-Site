@@ -15,6 +15,8 @@ class SignUpForm extends Component {
 	constructor() {
 		super();
 		this.state = {
+			firstname: '',
+			lastname: '',
 			name: '',
 			email: '',
 			password: '',
@@ -22,7 +24,8 @@ class SignUpForm extends Component {
 			open: true,
 			checked: false,
 			finished: false,
-			stepIndex: 0
+			stepIndex: 0,
+			errors: {}
 		};
 	}
 
@@ -33,11 +36,13 @@ class SignUpForm extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {}
-
-	onChange = e => {
-		this.setState({ [e.target.id]: e.target.value });
-	};
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.errors) {
+			this.setState({
+				errors: nextProps.errors
+			});
+		}
+	}
 
 	onSubmit = e => {
 		e.preventDefault();
@@ -52,12 +57,17 @@ class SignUpForm extends Component {
 		this.props.registerUser(newUser, this.props.history);
 	};
 
+	onChange = e => {
+		this.setState({ [e.target.id]: e.target.value });
+	};
+
 	handleOpen = () => {
 		this.setState({ open: true });
 	};
 
 	handleClose = () => {
 		this.setState({ open: false });
+		this.props.history.push('/');
 	};
 
 	updateCheck() {
@@ -72,7 +82,7 @@ class SignUpForm extends Component {
 		const { stepIndex } = this.state;
 		if (stepIndex === 2) {
 			this.setState({ stepIndex: 0, finished: false });
-			window.location = 'http://www.webjustify.com';
+			window.location = '/';
 		}
 		this.setState({
 			stepIndex: stepIndex + 1,
@@ -98,6 +108,9 @@ class SignUpForm extends Component {
 							floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
 							underlineFocusStyle={styles.underlineStyle}
 							fullWidth={true}
+							id="firstname"
+							value={this.state.firstname}
+							onChange={this.onChange}
 						/>
 						<br />
 						<TextField
@@ -106,6 +119,9 @@ class SignUpForm extends Component {
 							floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
 							underlineFocusStyle={styles.underlineStyle}
 							fullWidth={true}
+							id="lastname"
+							value={this.state.lastname}
+							onChange={this.onChange}
 						/>
 						<br />
 						<TextField
@@ -126,6 +142,10 @@ class SignUpForm extends Component {
 							floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
 							underlineFocusStyle={styles.underlineStyle}
 							fullWidth={true}
+							fullWidth={true}
+							id="name"
+							value={this.state.name}
+							onChange={this.onChange}
 						/>
 						<br />
 						<TextField
@@ -134,6 +154,9 @@ class SignUpForm extends Component {
 							floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
 							underlineFocusStyle={styles.underlineStyle}
 							fullWidth={true}
+							id="email"
+							value={this.state.email}
+							onChange={this.onChange}
 						/>
 						<br />
 						<TextField
@@ -143,6 +166,9 @@ class SignUpForm extends Component {
 							floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
 							underlineFocusStyle={styles.underlineStyle}
 							fullWidth={true}
+							id="password"
+							value={this.state.password}
+							onChange={this.onChange}
 						/>
 						<br />
 					</div>
@@ -167,6 +193,8 @@ class SignUpForm extends Component {
 	render() {
 		const { finished, stepIndex } = this.state;
 		const contentStyle = { margin: '0 16px' };
+		const { errors } = this.state;
+
 		const actions = [
 			<RaisedButton
 				label="Back"
@@ -214,7 +242,7 @@ class SignUpForm extends Component {
 							<div>
 								I don't have account
 								<a
-									href="http://www.webjustify.com"
+									href="/"
 									onClick={event => {
 										event.preventDefault();
 										this.setState({ stepIndex: 0, finished: false });
@@ -238,7 +266,7 @@ class SignUpForm extends Component {
 					/>
 					<login style={styles.loginStyle}>
 						I have an account
-						<a href="http://www.webjustify.com" style={styles.loginLink}>
+						<a href="/login" style={styles.loginLink}>
 							Login
 						</a>
 					</login>

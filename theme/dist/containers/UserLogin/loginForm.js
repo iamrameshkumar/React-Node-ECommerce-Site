@@ -64,6 +64,7 @@ var LoginForm = function (_Component) {
 
 		_this.handleClose = function () {
 			_this.setState({ open: false });
+			_this.props.history.push('/');
 		};
 
 		_this.onSubmit = function (e) {
@@ -81,7 +82,8 @@ var LoginForm = function (_Component) {
 			email: '',
 			password: '',
 			open: true,
-			checked: false
+			checked: false,
+			errors: {}
 		};
 		return _this;
 	}
@@ -97,6 +99,12 @@ var LoginForm = function (_Component) {
 		if (nextProps.auth.isAuthenticated) {
 			this.props.history.push('/');
 		}
+
+		if (nextProps.errors) {
+			this.setState({
+				errors: nextProps.errors
+			});
+		}
 	};
 
 	LoginForm.prototype.updateCheck = function updateCheck() {
@@ -108,7 +116,7 @@ var LoginForm = function (_Component) {
 	};
 
 	LoginForm.prototype.render = function render() {
-		var errors = this.props.errors.errors;
+		var errors = this.state.errors.errors;
 
 
 		var actions = [_react2.default.createElement(
@@ -144,7 +152,10 @@ var LoginForm = function (_Component) {
 					floatingLabelStyle: _style2.default.floatingLabelStyle,
 					floatingLabelFocusStyle: _style2.default.floatingLabelFocusStyle,
 					underlineFocusStyle: _style2.default.underlineStyle,
-					fullWidth: true
+					fullWidth: true,
+					id: 'email',
+					value: this.state.email,
+					onChange: this.onChange
 				}),
 				_react2.default.createElement('br', null),
 				_react2.default.createElement(_materialUi.TextField, {
@@ -153,7 +164,10 @@ var LoginForm = function (_Component) {
 					floatingLabelStyle: _style2.default.floatingLabelStyle,
 					floatingLabelFocusStyle: _style2.default.floatingLabelFocusStyle,
 					underlineFocusStyle: _style2.default.underlineStyle,
-					fullWidth: true
+					fullWidth: true,
+					id: 'password',
+					value: this.state.password,
+					onChange: this.onChange
 				}),
 				_react2.default.createElement('br', null),
 				_react2.default.createElement(_materialUi.Checkbox, {

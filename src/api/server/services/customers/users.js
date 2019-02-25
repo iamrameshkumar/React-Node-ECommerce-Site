@@ -25,11 +25,11 @@ const validateLoginInput = require('../validation/login');
 class AuthService {
 	constructor() {}
 
-	async registerUser(req) {
+	async registerUser(userInfo) {
 		// @route POST api/users/register
 		// @desc Register user
 		// @access Public
-		const { errors, isValid } = validateRegisterInput(req.body);
+		const { errors, isValid } = validateRegisterInput(userInfo);
 
 		// Check validation
 		if (!isValid) {
@@ -37,7 +37,7 @@ class AuthService {
 		}
 
 		db.collection('customers')
-			.findOne({ email: req.body.email })
+			.findOne({ email: userInfo.email })
 			.then(user => {
 				if (user) {
 					throw new httpBadRequest(
@@ -49,9 +49,9 @@ class AuthService {
 					let customer = {
 						date_created: new Date(),
 						date_updated: null,
-						full_name: req.body.name,
-						email: req.body.email,
-						password: req.body.password
+						full_name: userInfo.name,
+						email: userInfo.email,
+						password: userInfo.password
 					};
 
 					try {
@@ -80,22 +80,22 @@ class AuthService {
 			});
 	}
 
-	loginUser(req) {
+	loginUser(userInfo) {
 		// @route POST api/users/login
 		// @desc Login user and return JWT token
 		// @access Public
 
 		// Form validation
 
-		const { errors, isValid } = validateLoginInput(req.body);
+		const { errors, isValid } = validateLoginInput(userInfo);
 
 		// Check validation
 		if (!isValid) {
 			throw new httpBadRequest(errors.toString());
 		}
 
-		const email = req.body.email;
-		const password = req.body.password;
+		const email = userInfo.email;
+		const password = userInfo.password;
 
 		// Find user by email
 		db.collection('customers')

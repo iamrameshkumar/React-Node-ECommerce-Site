@@ -18,7 +18,8 @@ class LoginForm extends Component {
 			email: '',
 			password: '',
 			open: true,
-			checked: false
+			checked: false,
+			errors: {}
 		};
 	}
 
@@ -33,6 +34,12 @@ class LoginForm extends Component {
 		if (nextProps.auth.isAuthenticated) {
 			this.props.history.push('/');
 		}
+
+		if (nextProps.errors) {
+			this.setState({
+				errors: nextProps.errors
+			});
+		}
 	}
 
 	onChange = e => {
@@ -45,6 +52,7 @@ class LoginForm extends Component {
 
 	handleClose = () => {
 		this.setState({ open: false });
+		this.props.history.push('/');
 	};
 
 	updateCheck() {
@@ -67,7 +75,7 @@ class LoginForm extends Component {
 	};
 
 	render() {
-		const { errors } = this.props.errors;
+		const { errors } = this.state.errors;
 
 		const actions = [
 			<a href="#">Forget My Password</a>,
@@ -100,6 +108,9 @@ class LoginForm extends Component {
 						floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
 						underlineFocusStyle={styles.underlineStyle}
 						fullWidth={true}
+						id="email"
+						value={this.state.email}
+						onChange={this.onChange}
 					/>
 					<br />
 					<TextField
@@ -109,6 +120,9 @@ class LoginForm extends Component {
 						floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
 						underlineFocusStyle={styles.underlineStyle}
 						fullWidth={true}
+						id="password"
+						value={this.state.password}
+						onChange={this.onChange}
 					/>
 					<br />
 					<Checkbox
