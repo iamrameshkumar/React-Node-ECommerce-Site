@@ -54,7 +54,13 @@ class SignUpForm extends Component {
 			password2: this.state.password2
 		};
 
-		this.props.registerUser(newUser, this.props.history);
+		var returnCode = this.props.registerUser(newUser, this.props.history);
+
+		if (200 === returnCode) {
+			history.push('/login');
+		} else if (400 == returnCode) {
+			
+		}
 	};
 
 	onChange = e => {
@@ -207,7 +213,7 @@ class SignUpForm extends Component {
 				label={stepIndex === 2 ? 'Submit' : 'Next'}
 				value={stepIndex === 2 ? 'Submit' : 'Next'}
 				secondary={true}
-				onClick={this.handleNext}
+				onClick={stepIndex === 2 ? this.onSubmit : this.handleNext}
 			/>,
 			<RaisedButton
 				label="Cancel"

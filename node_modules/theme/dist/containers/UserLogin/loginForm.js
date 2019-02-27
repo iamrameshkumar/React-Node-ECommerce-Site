@@ -75,7 +75,9 @@ var LoginForm = function (_Component) {
 				password: _this.state.password
 			};
 
-			_this.props.loginUser(userData);
+			if (200 === _this.props.loginUser(userData)) {
+				history.push('/');
+			}
 		};
 
 		_this.state = {
@@ -141,7 +143,7 @@ var LoginForm = function (_Component) {
 			_react2.default.createElement(
 				_materialUi.Dialog,
 				{
-					title: 'Sign In To Webjustify ',
+					title: 'Sign In To FashionFactory',
 					actions: actions,
 					modal: true,
 					open: this.state.open,

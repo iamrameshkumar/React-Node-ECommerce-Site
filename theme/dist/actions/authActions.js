@@ -23,12 +23,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var registerUser = exports.registerUser = function registerUser(userData, history) {
 	return function (dispatch) {
 		_api2.default.restClient.post('/users/register', userData).then(function (res) {
-			return history.push('/login');
+			return res.code;
 		}).catch(function (err) {
-			return dispatch({
-				type: _authActiontypes.GET_ERRORS,
-				payload: err.response.data
-			});
+			dispatch({ type: _authActiontypes.GET_ERRORS, payload: err.response.data });
+			return res.code;
 		});
 	};
 };
@@ -49,8 +47,10 @@ var loginUser = exports.loginUser = function loginUser(userData) {
 			var decoded = (0, _jwtDecode2.default)(token);
 			// Set current user
 			dispatch(setCurrentUser(decoded));
+			return res.code;
 		}).catch(function (err) {
-			return dispatch({ type: _authActiontypes.GET_ERRORS, payload: err.response.data });
+			dispatch({ type: _authActiontypes.GET_ERRORS, payload: err.response.data });
+			return res.code;
 		});
 	};
 };

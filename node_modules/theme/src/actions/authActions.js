@@ -8,13 +8,13 @@ import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING } from './authActiontypes';
 export const registerUser = (userData, history) => dispatch => {
 	api.restClient
 		.post('/users/register', userData)
-		.then(res => history.push('/login'))
-		.catch(err =>
-			dispatch({
-				type: GET_ERRORS,
-				payload: err.response.data
-			})
-		);
+		.then(res => {
+			return res.code;
+		})
+		.catch(err => {
+			dispatch({ type: GET_ERRORS, payload: err.response.data });
+			return res.code;
+		});
 };
 
 // Login - get user token
@@ -33,8 +33,12 @@ export const loginUser = userData => dispatch => {
 			const decoded = jwt_decode(token);
 			// Set current user
 			dispatch(setCurrentUser(decoded));
+			return res.code;
 		})
-		.catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
+		.catch(err => {
+			dispatch({ type: GET_ERRORS, payload: err.response.data });
+			return res.code;
+		});
 };
 
 // Set logged in user

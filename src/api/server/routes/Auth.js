@@ -26,7 +26,7 @@ class AuthRoute {
 
 	loginUser(req, res, next) {
 		try {
-			res.json(AuthService.loginUser(req.body));
+			res.status(200).json(AuthService.loginUser(req.body));
 		} catch (err) {
 			if (err instanceof httpError) {
 				res.status(err.code).send(err.message);
@@ -38,7 +38,7 @@ class AuthRoute {
 
 	registerUser(req, res, next) {
 		try {
-			res.json(AuthService.registerUser(req.body));
+			res.status(200).json(AuthService.registerUser(req.body));
 		} catch (err) {
 			if (err instanceof httpError) {
 				res.status(err.code).send(err.message);

@@ -10,6 +10,7 @@ var httpError = httpErrorInterfaces.httpError;
 var httpInternalServerError = httpErrorInterfaces.httpInternalServerError;
 var httpForbidden = httpErrorInterfaces.httpForbidden;
 var httpNotFound = httpErrorInterfaces.httpNotFound;
+var httpBadRequest = httpErrorInterfaces.httpBadRequest;
 
 const express = require('express');
 const router = express.Router();
@@ -53,30 +54,28 @@ class AuthService {
 						email: userInfo.email,
 						password: userInfo.password
 					};
+					// Hash password before saving in database
+					bcrypt.genSalt(10, (err, salt) => {
+						bcrypt.hash(customer.password, salt, async (err, hash) => {
+							if (err) throw new httpInternalServerError(err.toString());
+							customer.password = hash;
 
-					try {
-						// Hash password before saving in database
-						bcrypt.genSalt(10, (err, salt) => {
-							bcrypt.hash(customer.password, salt, async (err, hash) => {
-								if (err) throw new httpInternalServerError(err.toString());
-								customer.password = hash;
-
-								const insertResponse = await db
-									.collection('customers')
-									.insertMany([customer]);
-								const newCustomerId = insertResponse.ops[0]._id.toString();
-								const newCustomer = await this.getSingleCustomer(newCustomerId);
-								await webhooks.trigger({
-									event: webhooks.events.CUSTOMER_CREATED,
-									payload: newCustomer
-								});
-								return newCustomer;
+							const insertResponse = await db
+								.collection('customers')
+								.insertMany([customer]);
+							const newCustomerId = insertResponse.ops[0]._id.toString();
+							const newCustomer = await this.getSingleCustomer(newCustomerId);
+							await webhooks.trigger({
+								event: webhooks.events.CUSTOMER_CREATED,
+								payload: newCustomer
 							});
+							return newCustomer;
 						});
-					} catch (err) {
-						throw new httpInternalServerError(err.toString());
-					}
+					});
 				}
+			})
+			.catch(err => {
+				throw new httpInternalServerError(err.toString());
 			});
 	}
 
@@ -135,6 +134,9 @@ class AuthService {
 						);
 					}
 				});
+			})
+			.catch(err => {
+				throw new httpInternalServerError(err.toString());
 			});
 	}
 }

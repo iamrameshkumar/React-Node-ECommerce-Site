@@ -71,7 +71,9 @@ class LoginForm extends Component {
 			password: this.state.password
 		};
 
-		this.props.loginUser(userData);
+		if (200 === this.props.loginUser(userData)) {
+			history.push('/');
+		}
 	};
 
 	render() {
@@ -96,7 +98,7 @@ class LoginForm extends Component {
 		return (
 			<MuiThemeProvider>
 				<Dialog
-					title="Sign In To Webjustify "
+					title="Sign In To FashionFactory"
 					actions={actions}
 					modal={true}
 					open={this.state.open}

@@ -64,7 +64,11 @@ var SignUpForm = function (_Component) {
 				password2: _this.state.password2
 			};
 
-			_this.props.registerUser(newUser, _this.props.history);
+			var returnCode = _this.props.registerUser(newUser, _this.props.history);
+
+			if (200 === returnCode) {
+				history.push('/login');
+			} else if (400 == returnCode) {}
 		};
 
 		_this.onChange = function (e) {
@@ -252,7 +256,7 @@ var SignUpForm = function (_Component) {
 			label: stepIndex === 2 ? 'Submit' : 'Next',
 			value: stepIndex === 2 ? 'Submit' : 'Next',
 			secondary: true,
-			onClick: this.handleNext
+			onClick: stepIndex === 2 ? this.onSubmit : this.handleNext
 		}), _react2.default.createElement(_materialUi.RaisedButton, {
 			label: 'Cancel',
 			onClick: this.handleClose,
