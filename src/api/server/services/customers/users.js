@@ -30,114 +30,122 @@ class AuthService {
 		// @route POST api/users/register
 		// @desc Register user
 		// @access Public
-		const { errors, isValid } = validateRegisterInput(userInfo);
 
-		// Check validation
-		if (!isValid) {
-			throw new httpBadRequest(errors.toString());
-		}
+		try {
+			const { errors, isValid } = validateRegisterInput(userInfo);
 
-		db.collection('customers')
-			.findOne({ email: userInfo.email })
-			.then(user => {
-				if (user) {
-					throw new httpBadRequest(
-						JSON.stringify({
-							email: 'Email already exists'
-						})
-					);
-				} else {
-					let customer = {
-						date_created: new Date(),
-						date_updated: null,
-						full_name: userInfo.name,
-						email: userInfo.email,
-						password: userInfo.password
-					};
-					// Hash password before saving in database
-					bcrypt.genSalt(10, (err, salt) => {
-						bcrypt.hash(customer.password, salt, async (err, hash) => {
-							if (err) throw new httpInternalServerError(err.toString());
-							customer.password = hash;
+			// Check validation
+			if (!isValid) {
+				throw new httpBadRequest(errors.toString());
+			}
 
-							const insertResponse = await db
-								.collection('customers')
-								.insertMany([customer]);
-							const newCustomerId = insertResponse.ops[0]._id.toString();
-							const newCustomer = await this.getSingleCustomer(newCustomerId);
-							await webhooks.trigger({
-								event: webhooks.events.CUSTOMER_CREATED,
-								payload: newCustomer
-							});
-							return newCustomer;
+			let user = await db
+				.collection('customers')
+				.findOne({ email: userInfo.email });
+
+			if (user) {
+				throw new httpBadRequest(
+					JSON.stringify({
+						email: 'Email already exists'
+					})
+				);
+			} else {
+				let customer = {
+					date_created: new Date(),
+					date_updated: null,
+					full_name: userInfo.name,
+					email: userInfo.email,
+					password: userInfo.password
+				};
+				// Hash password before saving in database
+				bcrypt.genSalt(10, (err, salt) => {
+					bcrypt.hash(customer.password, salt, async (err, hash) => {
+						if (err) {
+							throw new httpInternalServerError(err.toString());
+						}
+
+						customer.password = hash;
+
+						const insertResponse = await db
+							.collection('customers')
+							.insertMany([customer]);
+						const newCustomerId = insertResponse.ops[0]._id.toString();
+						await webhooks.trigger({
+							event: webhooks.events.CUSTOMER_CREATED,
+							payload: newCustomer
 						});
+						return newCustomerId;
 					});
-				}
-			})
-			.catch(err => {
+				});
+			}
+		} catch (err) {
+			if (err instanceof httpError) {
+				throw err;
+			} else {
 				throw new httpInternalServerError(err.toString());
-			});
+			}
+		}
 	}
 
-	loginUser(userInfo) {
+	async loginUser(userInfo) {
 		// @route POST api/users/login
 		// @desc Login user and return JWT token
 		// @access Public
+		try {
+			// Form validation
+			const { errors, isValid } = validateLoginInput(userInfo);
 
-		// Form validation
+			// Check validation
+			if (!isValid) {
+				throw new httpBadRequest(errors.toString());
+			}
 
-		const { errors, isValid } = validateLoginInput(userInfo);
+			const email = userInfo.email;
+			const password = userInfo.password;
 
-		// Check validation
-		if (!isValid) {
-			throw new httpBadRequest(errors.toString());
-		}
+			// Find user by email
+			let user = db.collection('customers').findOne({ email });
+			// Check if user exists
+			if (!user) {
+				throw new httpNotFound({ emailnotfound: 'Email not found' });
+			}
 
-		const email = userInfo.email;
-		const password = userInfo.password;
+			// Check password
+			let isMatch = await bcrypt.compare(password, user.password);
 
-		// Find user by email
-		db.collection('customers')
-			.findOne({ email })
-			.then(user => {
-				// Check if user exists
-				if (!user) {
-					throw new httpNotFound({ emailnotfound: 'Email not found' });
-				}
+			if (isMatch) {
+				// User matched
+				// Create JWT Payload
+				const payload = { id: user.id, name: user.name };
 
-				// Check password
-				bcrypt.compare(password, user.password).then(isMatch => {
-					if (isMatch) {
-						// User matched
-						// Create JWT Payload
-						const payload = { id: user.id, name: user.name };
-
-						// Sign token
-						jwt.sign(
-							payload,
-							keys.secretOrKey,
-							{
-								expiresIn: 31556926 // 1 year in seconds
-							},
-							(err, token) => {
-								return {
-									success: true,
-									token: 'Bearer ' + token
-								};
-							}
-						);
-					} else {
-						throw new httpBadRequest(
-							JSON.stringify({
-								passwordincorrect: 'Password incorrect'
-							})
-						);
+				// Sign token
+				jwt.sign(
+					payload,
+					keys.secretOrKey,
+					{
+						expiresIn: 31556926 // 1 year in seconds
+					},
+					(err, token) => {
+						return {
+							success: true,
+							token: 'Bearer ' + token
+						};
 					}
-				});
-			})
-			.catch(err => {
+				);
+			} else {
+				throw new httpBadRequest(
+					JSON.stringify({
+						passwordincorrect: 'Password incorrect'
+					})
+				);
+			}
+		} catch (err) {
+			if (err instanceof httpError) {
+				throw err;
+			} else {
 				throw new httpInternalServerError(err.toString());
-			});
+			}
+		}
 	}
 }
 

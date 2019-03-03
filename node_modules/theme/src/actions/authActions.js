@@ -3,65 +3,57 @@ import setAuthToken from '../lib/utils/setAuthToken';
 import jwt_decode from 'jwt-decode';
 
 import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING } from './authActiontypes';
+class AuthActions {
+	// Register User
+	async registerUser(userData, history) {
+		let response = await api.restClient.post('/users/register', userData);
+		return response;
+	}
 
-// Register User
-export const registerUser = (userData, history) => dispatch => {
-	api.restClient
-		.post('/users/register', userData)
-		.then(res => {
-			return res.code;
-		})
-		.catch(err => {
-			dispatch({ type: GET_ERRORS, payload: err.response.data });
-			return res.code;
-		});
-};
-
-// Login - get user token
-export const loginUser = userData => dispatch => {
-	api.restClient
-		.post('/users/login', userData)
-		.then(res => {
+	// Login - get user token
+	async loginUser(userData) {
+		let response = api.restClient.post('/users/login', userData);
+		if (response) {
 			// Save to localStorage
+			if (200 === response.status) {
+				// Set token to localStorage
+				const { token } = response.json.token;
+				localStorage.setItem('jwtToken', token);
+				// Set token to Auth header
+				setAuthToken(token);
+				// Decode token to get user data
+				const decoded = jwt_decode(token);
+				// Set current user
+				dispatch(setCurrentUser(decoded));
+			}
+		}
+		return response;
+	}
 
-			// Set token to localStorage
-			const { token } = res.data;
-			localStorage.setItem('jwtToken', token);
-			// Set token to Auth header
-			setAuthToken(token);
-			// Decode token to get user data
-			const decoded = jwt_decode(token);
-			// Set current user
-			dispatch(setCurrentUser(decoded));
-			return res.code;
-		})
-		.catch(err => {
-			dispatch({ type: GET_ERRORS, payload: err.response.data });
-			return res.code;
-		});
-};
-
-// Set logged in user
-export const setCurrentUser = decoded => {
-	return {
-		type: SET_CURRENT_USER,
-		payload: decoded
+	// Set logged in user
+	setCurrentUser = decoded => {
+		return {
+			type: SET_CURRENT_USER,
+			payload: decoded
+		};
 	};
-};
 
-// User loading
-export const setUserLoading = () => {
-	return {
-		type: USER_LOADING
+	// User loading
+	setUserLoading = () => {
+		return {
+			type: USER_LOADING
+		};
 	};
-};
 
-// Log user out
-export const logoutUser = () => dispatch => {
-	// Remove token from local storage
-	localStorage.removeItem('jwtToken');
-	// Remove auth header for future requests
-	setAuthToken(false);
-	// Set current user to empty object {} which will set isAuthenticated to false
-	dispatch(setCurrentUser({}));
-};
+	// Log user out
+	logoutUser = () => dispatch => {
+		// Remove token from local storage
+		localStorage.removeItem('jwtToken');
+		// Remove auth header for future requests
+		setAuthToken(false);
+		// Set current user to empty object {} which will set isAuthenticated to false
+		dispatch(setCurrentUser({}));
+	};
+}
+
+export default new AuthActions();

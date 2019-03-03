@@ -8,7 +8,7 @@ import { TextField, RaisedButton, Dialog, Checkbox } from 'material-ui';
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
 import styles from './style';
 
-import { registerUser } from '../../actions/authActions';
+import AuthActions from '../../actions/authActions';
 import classnames from 'classnames';
 
 class SignUpForm extends Component {
@@ -44,9 +44,7 @@ class SignUpForm extends Component {
 		}
 	}
 
-	onSubmit = e => {
-		e.preventDefault();
-
+	async submitUserForRegistration() {
 		const newUser = {
 			name: this.state.name,
 			email: this.state.email,
@@ -54,13 +52,27 @@ class SignUpForm extends Component {
 			password2: this.state.password2
 		};
 
-		var returnCode = this.props.registerUser(newUser, this.props.history);
+		try {
+			let response = await AuthActions.registerUser(
+				newUser,
+				this.props.history
+			);
 
-		if (200 === returnCode) {
-			history.push('/login');
-		} else if (400 == returnCode) {
-			
+			if (200 === response.status) {
+				this.props.history.push('/login');
+			} else if (400 == response.status) {
+				this.setState({
+					errors: response.JsonData
+				});
+			}
+		} catch (e) {
+			console.log('exception occurred ' + e.toString());
 		}
+	}
+
+	onSubmit = e => {
+		e.preventDefault();
+		this.submitUserForRegistration();
 	};
 
 	onChange = e => {
@@ -283,7 +295,6 @@ class SignUpForm extends Component {
 }
 
 SignUpForm.propTypes = {
-	registerUser: PropTypes.func.isRequired,
 	auth: PropTypes.object.isRequired,
 	errors: PropTypes.object.isRequired
 };
@@ -293,7 +304,4 @@ const mapStateToProps = state => ({
 	errors: state.errors
 });
 
-export default connect(
-	mapStateToProps,
-	{ registerUser }
-)(withRouter(SignUpForm));
+export default connect(mapStateToProps)(withRouter(SignUpForm));

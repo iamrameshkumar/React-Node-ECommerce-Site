@@ -2,6 +2,14 @@
 
 exports.__esModule = true;
 
+var _regenerator = require('babel-runtime/regenerator');
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
 var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -38,6 +46,8 @@ var _materialUi = require('material-ui');
 
 var _authActions = require('../../actions/authActions');
 
+var _authActions2 = _interopRequireDefault(_authActions);
+
 var _style = require('./style');
 
 var _style2 = _interopRequireDefault(_style);
@@ -69,15 +79,7 @@ var LoginForm = function (_Component) {
 
 		_this.onSubmit = function (e) {
 			e.preventDefault();
-
-			var userData = {
-				email: _this.state.email,
-				password: _this.state.password
-			};
-
-			if (200 === _this.props.loginUser(userData)) {
-				history.push('/');
-			}
+			_this.authenticateUser();
 		};
 
 		_this.state = {
@@ -116,6 +118,48 @@ var LoginForm = function (_Component) {
 			};
 		});
 	};
+
+	LoginForm.prototype.authenticateUser = function () {
+		var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+			var userData, response;
+			return _regenerator2.default.wrap(function _callee$(_context) {
+				while (1) {
+					switch (_context.prev = _context.next) {
+						case 0:
+							userData = {
+								email: this.state.email,
+								password: this.state.password
+							};
+
+
+							try {
+								response = _authActions2.default.loginUser(userData);
+
+								if (200 === response.status) {
+									this.props.history.push('/');
+								} else if (400 == response.status) {
+									this.setState({
+										errors: response.JsonData
+									});
+								}
+							} catch (e) {
+								console.log('exception occurred ' + e.toString());
+							}
+
+						case 2:
+						case 'end':
+							return _context.stop();
+					}
+				}
+			}, _callee, this);
+		}));
+
+		function authenticateUser() {
+			return _ref.apply(this, arguments);
+		}
+
+		return authenticateUser;
+	}();
 
 	LoginForm.prototype.render = function render() {
 		var errors = this.state.errors.errors;
@@ -196,7 +240,6 @@ var LoginForm = function (_Component) {
 }(_react.Component);
 
 LoginForm.propTypes = {
-	loginUser: _propTypes2.default.func.isRequired,
 	auth: _propTypes2.default.object.isRequired,
 	errors: _propTypes2.default.object.isRequired
 };
@@ -208,5 +251,5 @@ var mapStateToProps = function mapStateToProps(state) {
 	};
 };
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, { loginUser: _authActions.loginUser })(LoginForm);
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(LoginForm);
 //# sourceMappingURL=loginForm.js.map

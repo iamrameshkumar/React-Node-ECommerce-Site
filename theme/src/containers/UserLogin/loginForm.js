@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { TextField, RaisedButton, Dialog, Checkbox } from 'material-ui';
 
-import { loginUser } from '../../actions/authActions';
+import AuthActions from '../../actions/authActions';
 
 import styles from './style';
 
@@ -63,17 +63,29 @@ class LoginForm extends Component {
 		});
 	}
 
-	onSubmit = e => {
-		e.preventDefault();
-
+	async authenticateUser() {
 		const userData = {
 			email: this.state.email,
 			password: this.state.password
 		};
 
-		if (200 === this.props.loginUser(userData)) {
-			history.push('/');
+		try {
+			let response = AuthActions.loginUser(userData);
+			if (200 === response.status) {
+				this.props.history.push('/');
+			} else if (400 == response.status) {
+				this.setState({
+					errors: response.JsonData
+				});
+			}
+		} catch (e) {
+			console.log('exception occurred ' + e.toString());
 		}
+	}
+
+	onSubmit = e => {
+		e.preventDefault();
+		this.authenticateUser();
 	};
 
 	render() {
@@ -146,7 +158,6 @@ class LoginForm extends Component {
 }
 
 LoginForm.propTypes = {
-	loginUser: PropTypes.func.isRequired,
 	auth: PropTypes.object.isRequired,
 	errors: PropTypes.object.isRequired
 };
@@ -156,7 +167,4 @@ const mapStateToProps = state => ({
 	errors: state.errors
 });
 
-export default connect(
-	mapStateToProps,
-	{ loginUser }
-)(LoginForm);
+export default connect(mapStateToProps)(LoginForm);

@@ -24,9 +24,10 @@ class AuthRoute {
 		);
 	}
 
-	loginUser(req, res, next) {
+	async loginUser(req, res, next) {
 		try {
-			res.status(200).json(AuthService.loginUser(req.body));
+			let data = await AuthService.loginUser(req.body);
+			res.status(200).json(data);
 		} catch (err) {
 			if (err instanceof httpError) {
 				res.status(err.code).send(err.message);
@@ -36,9 +37,10 @@ class AuthRoute {
 		}
 	}
 
-	registerUser(req, res, next) {
+	async registerUser(req, res, next) {
 		try {
-			res.status(200).json(AuthService.registerUser(req.body));
+			let data = await AuthService.registerUser(req.body);
+			res.status(200).json(data);
 		} catch (err) {
 			if (err instanceof httpError) {
 				res.status(err.code).send(err.message);

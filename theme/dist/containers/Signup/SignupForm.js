@@ -2,6 +2,14 @@
 
 exports.__esModule = true;
 
+var _regenerator = require('babel-runtime/regenerator');
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
 var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -40,6 +48,8 @@ var _style2 = _interopRequireDefault(_style);
 
 var _authActions = require('../../actions/authActions');
 
+var _authActions2 = _interopRequireDefault(_authActions);
+
 var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
@@ -56,19 +66,7 @@ var SignUpForm = function (_Component) {
 
 		_this.onSubmit = function (e) {
 			e.preventDefault();
-
-			var newUser = {
-				name: _this.state.name,
-				email: _this.state.email,
-				password: _this.state.password,
-				password2: _this.state.password2
-			};
-
-			var returnCode = _this.props.registerUser(newUser, _this.props.history);
-
-			if (200 === returnCode) {
-				history.push('/login');
-			} else if (400 == returnCode) {}
+			_this.submitUserForRegistration();
 		};
 
 		_this.onChange = function (e) {
@@ -137,6 +135,58 @@ var SignUpForm = function (_Component) {
 			});
 		}
 	};
+
+	SignUpForm.prototype.submitUserForRegistration = function () {
+		var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+			var newUser, response;
+			return _regenerator2.default.wrap(function _callee$(_context) {
+				while (1) {
+					switch (_context.prev = _context.next) {
+						case 0:
+							newUser = {
+								name: this.state.name,
+								email: this.state.email,
+								password: this.state.password,
+								password2: this.state.password2
+							};
+							_context.prev = 1;
+							_context.next = 4;
+							return _authActions2.default.registerUser(newUser, this.props.history);
+
+						case 4:
+							response = _context.sent;
+
+
+							if (200 === response.status) {
+								this.props.history.push('/login');
+							} else if (400 == response.status) {
+								this.setState({
+									errors: response.JsonData
+								});
+							}
+							_context.next = 11;
+							break;
+
+						case 8:
+							_context.prev = 8;
+							_context.t0 = _context['catch'](1);
+
+							console.log('exception occurred ' + _context.t0.toString());
+
+						case 11:
+						case 'end':
+							return _context.stop();
+					}
+				}
+			}, _callee, this, [[1, 8]]);
+		}));
+
+		function submitUserForRegistration() {
+			return _ref.apply(this, arguments);
+		}
+
+		return submitUserForRegistration;
+	}();
 
 	SignUpForm.prototype.updateCheck = function updateCheck() {
 		this.setState(function (oldState) {
@@ -360,7 +410,6 @@ var SignUpForm = function (_Component) {
 }(_react.Component);
 
 SignUpForm.propTypes = {
-	registerUser: _propTypes2.default.func.isRequired,
 	auth: _propTypes2.default.object.isRequired,
 	errors: _propTypes2.default.object.isRequired
 };
@@ -372,5 +421,5 @@ var mapStateToProps = function mapStateToProps(state) {
 	};
 };
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, { registerUser: _authActions.registerUser })((0, _reactRouterDom.withRouter)(SignUpForm));
+exports.default = (0, _reactRedux.connect)(mapStateToProps)((0, _reactRouterDom.withRouter)(SignUpForm));
 //# sourceMappingURL=SignupForm.js.map
