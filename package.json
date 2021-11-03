@@ -137,7 +137,7 @@
     "stripe": "^6.7.0",
     "theme": "file:theme",
     "ua-parser-js": "^0.7.18",
-    "validator": "^10.11.0",
+    "validator": "^13.7.0",
     "webpack": "^4.17.1",
     "webpack-cli": "^3.1.0",
     "webpack-devserver": "0.0.6",
